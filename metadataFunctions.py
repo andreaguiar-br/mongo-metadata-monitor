@@ -1,4 +1,5 @@
 import json
+import pymongo
 
 typePy2mongo = {
     "bool" : "bool",
@@ -29,33 +30,6 @@ def getTypeDoc( docParm ):
             subDoc = getTypeDoc(valor)
             for campoSubDoc, valorSubDoc in subDoc.items():
                 docTipo[campo+'.'+campoSubDoc]= valorSubDoc
-        # elif type(valor).__name__ == 'list2':
-        #     array1dTipo = type_array(valor)
-        #     arrayTipoAdd = []
-        #     tipoElem = ''
-        #     for elem in array1dTipo :
-        #         if type(elem).__name__ == 'dict' :
-        #             tipoElem = 'dict'
-        #             for campoArray, valorArray in elem.items() :
-        #                 docTipo[campo+'[].'+campoArray] = valorArray
-        #         elif type(elem).__name__ == 'list' :
-        #             tipoElem = 'list'
-        #             if len(elem) > 1 :
-        #                 docTipo[campo+'[][]'] = elem
-        #             else:
-        #                 docTipo[campo+'[][]'] = elem[0]
-        #             # docTipo[campo+'[][]'] = elem
-        #         else:
-        #             tipoElem = elem
-
-        #         try:
-        #             arrayTipoAdd.index(tipoElem)
-        #         except ValueError:
-        #             arrayTipoAdd.append(tipoElem)
-        #         if len(arrayTipoAdd) > 1 :
-        #             docTipo[campo+'[]'] = arrayTipoAdd
-        #         else:
-        #             docTipo[campo+'[]'] = arrayTipoAdd[0]
         elif type(valor).__name__ == 'list':
             docArrayTipo = getTypeArrayDoc(valor)
             for campoDocArray, valorDocArray in docArrayTipo.items():
@@ -64,29 +38,6 @@ def getTypeDoc( docParm ):
             docTipo[campo] =  typePy2mongo[type(valor).__name__ ]
             pass 
     return docTipo
-
-## ajustar navegação de arrays para refletir níveis de profundidade nos nomes dos campos. 
-# def type_array( arrayParm ):
-#     arrayTipo = []
-#     docArray = {'[]': [] }
-#     for elemento in arrayParm :
-#         if type(elemento).__name__ == 'dict':
-#             subDoc = type_doc(elemento)
-#             arrayTipo.append(subDoc)
-#             # for campoSubDoc, valorSubDoc in subDoc.items():
-#             #     docArray['[].'+campoSubDoc]= valorSubDoc
-#         elif type(elemento).__name__ == 'list':
-#             subArray = type_array(elemento)
-#             arrayTipo.append(subArray)
-#             # for campoSubDoc, valorSubDoc in subArray.items():
-#             #     docArray['[][]'+campoSubDoc]= valorSubDoc
-#         else:
-#             try:
-#                 arrayTipo.index(type(elemento).__name__)
-#             except ValueError:
-#                 arrayTipo.append(type(elemento).__name__)
-#     print(arrayTipo)
-#     return arrayTipo
 
 def getTypeArrayDoc( arrayParm ):
     arrayTipo = []
@@ -129,3 +80,4 @@ def getTypeArrayDoc( arrayParm ):
     else:
         docArray['[]']= arrayTipo[0]
     return docArray
+

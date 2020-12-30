@@ -21,19 +21,19 @@ import pprint
 print('** Monitorando alterações na instalação MongoDB **')
 for change in change_stream:
 
-    doctipo = getTypeDoc(change["fullDocument"]) 
     # print ( doctipo )
     print('--------------')
     #builder = SchemaBuilder()
     #builder.add_schema({"type": "object", "properties": {}})
     ##builder.add_object(dumps(change["fullDocument"]))
     #builder.add_object(eval(dumps(change["fullDocument"])))
-#     print(type(change))
-    if change["operationType"]=='delete':
+    print(change["operationType"], '- servidor:',change["ns"])
+    if change["operationType"] in ['delete', 'drop']:
         print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"])
     else:
         print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"],'\nDocumento: ', dumps(change["fullDocument"]))
         print('#### Datatypes ###')
+        doctipo = getTypeDoc(change["fullDocument"]) 
         pprint.pprint(doctipo)
    
 

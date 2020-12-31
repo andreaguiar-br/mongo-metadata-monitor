@@ -1,6 +1,6 @@
 import pymongo
 from bson.json_util import dumps
-from metadataFunctions import *
+from metadataFunctions import getMetadados, atualizaMetadadosCollection
 # import logging
 
 ## tratar padrões BSON -> Json

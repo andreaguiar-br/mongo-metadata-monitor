@@ -1,3 +1,4 @@
+'''
 Python Type     	        BSON Type 	    Supported Direction
 None 	                    null 	        both
 bool 	                    boolean 	    both
@@ -20,7 +21,7 @@ unicode 	                code 	        bson -> py
 bson.code.Code 	            code 	        py -> bson
 unicode 	s               ymbol 	        bson -> py
 bytes (Python 3) [5] 	    binary 	b       oth
-
+'''
 Note that, when using Python 2.x, to save binary data it must be wrapped as an instance of bson.binary.Binary. Otherwise it will be saved as a BSON string and retrieved as unicode. Users of Python 3.x can use the Python bytes type.
 [1]	A Python int will be saved as a BSON int32 or BSON int64 depending on its size. A BSON int32 will always decode to a Python int. A BSON int64 will always decode to a Int64.
 [2]	datetime.datetime instances will be rounded to the nearest millisecond when saved

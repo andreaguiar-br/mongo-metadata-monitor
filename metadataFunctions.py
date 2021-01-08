@@ -3,6 +3,8 @@ import pymongo
 from datetime import datetime, timezone
 import pytz
 
+
+
 typePy2mongo = {
     "bool" : "bool",
     "int"  : "int32",
@@ -23,11 +25,12 @@ typePy2mongo = {
     "Byte" : "binData"
 
 }
-def getMetadados( docChangeStream ):
+def getMetadados( servidorMongo, docChangeStream ):
     '''
     Gera documento JSON com metadados extraídos do documento gerado pelo Change Stream do MongoDB.
 
     parametros:
+    servidorMongo - Servidor mongoDB usado para conexão e observação dos metadados
     docChamStream - Documento gerado pelo evento de ChangeStream e que terá seus metadados extraídos
 
     retorna:
@@ -37,13 +40,16 @@ def getMetadados( docChangeStream ):
     # pprint.pprint(doctipo)
     # print("### Gravando Metadados ###")
     # identificando a versão da estrutura (schema)
-    
+ 
+    if  servidorMongo == '' :
+        raise "Parametro 'servidorMongo' não localizado"
+
     if "schema_version" in docChangeStream["fullDocument"]:
         versaoEstrutura=docChangeStream["fullDocument"]["schema_version"]
     else:
         versaoEstrutura=None
 
-    return {"host":'localhost',
+    return {"host":servidorMongo,
         "db": docChangeStream["ns"]["db"],
         "collection": docChangeStream["ns"]["coll"],
         "estrutura": doctipo,

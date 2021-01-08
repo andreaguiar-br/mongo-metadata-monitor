@@ -1,6 +1,9 @@
 import pymongo
+import os
 from bson.json_util import dumps
 from metadataFunctions import getMetadados, atualizaMetadadosCollection
+import pprint
+# import urllib.parse
 # import logging
 
 ## tratar padrões BSON -> Json
@@ -9,7 +12,14 @@ from metadataFunctions import getMetadados, atualizaMetadadosCollection
 
 # logging = logging.getLogger(__name__)
 # TODO: pegar o servidor mongo a partir de variavel ambiente os.environ['CHANGE_STREAM_DB']
-client = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
+# username = urllib.parse.quote_plus('root')
+# password = urllib.parse.quote_plus('mongopass')
+username = "root"
+password = "mongopass"
+servidorMongo = os.environ['CHANGE_STREAM_DB']
+print('*** Conectando..',"mongodb://"+username+":'password'@"+os.environ['CHANGE_STREAM_DB']+"/admin?retryWrites=true")
+# client = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
+# client = pymongo.MongoClient("mongodb://root:mongopass@"+os.environ['CHANGE_STREAM_DB']+"/admin?retryWrites=true")
 
 # pipeline a ser usado futuramente pra filtrar eventos a serem monitorados e databases.
 filtroWatch = [
@@ -18,7 +28,18 @@ filtroWatch = [
 ]
 
 # client = pymongo.MongoClient("mongodb://root:mongopass@mongodb/admin?retryWrites=true")
-change_stream = client.watch(full_document='updateLookup', pipeline=filtroWatch)  #retorna sempre o documento completo atualizado
+client = pymongo.MongoClient(
+    host = servidorMongo, # <-- IP and port go here
+    serverSelectionTimeoutMS = 6000, # 3 second timeout
+    username=username,
+    password=password,
+    authSource='admin',
+    authMechanism='SCRAM-SHA-256'
+)
+print("** MongoDB Server Information ***")
+pprint.pprint(client.server_info())
+#retorna sempre o documento completo atualizado
+change_stream = client.watch(full_document='updateLookup', pipeline=filtroWatch)  
 
 # import pprint 
 # Campos a verificar: 
@@ -41,7 +62,7 @@ for change in change_stream:
         #     "collection": change["ns"]["coll"],
         #     "estrutura": doctipo 
         #     }
-        docMetadados = getMetadados(change)
+        docMetadados = getMetadados(servidorMongo, change)
         resGrav = atualizaMetadadosCollection(client,docMetadados)
         print(resGrav)
    

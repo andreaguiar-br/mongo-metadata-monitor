@@ -1,0 +1,23 @@
+version: "3"
+services:
+  mongo:
+    image: mongometadatamonitor
+    hostname: mmmonitor
+    container_name: mmmonitor
+    # command: ["--replSet", "$${MONGO_REPLICA_SET_NAME}", "--bind_ip_all", "--auth" ]
+    # volumes: 
+    #   - vol-mongo:/data/db
+    restart: always
+    ports:
+      - "8011:8011"
+    environment:
+      - CHANGE_STREAM_DB=mongo
+    #   - MONGO_INITDB_ADMINPASSWORD=mongopass
+    #   - MONGO_REPLICA_SET_NAME=rsmongo
+    networks:
+      - net-backend
+
+networks:
+  net-backend:
+    external: 
+      name: mongo_net-backend

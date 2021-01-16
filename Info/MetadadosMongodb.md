@@ -1,4 +1,4 @@
-#Estudo de Volumetria 
+# Estudo de Volumetria 
 
 1000 BD
 (1-n)
@@ -11,9 +11,9 @@
 10 atributos (nome lõgico, tipo-logico/fisico[], tamanho-logico/fisico[], descrição) (rastrear exclusões)
 
 
-Consultas:
+## Consultas:
 - por nome/descrição do campo
 - por nome/descrição/sistema da Coleção
 
-Apresentação:
+## Apresentação:
 - schema de uma coleção com tipos, descrição de campos e da coleção 

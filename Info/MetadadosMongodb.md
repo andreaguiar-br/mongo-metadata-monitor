@@ -1,5 +1,6 @@
 # Estudo de Volumetria 
 
+## Relação entre entidades
 1000 BD
 (1-n)
 1000 Coleção(nome lógico, descrição) *entidade* possui um schema (versionável)
@@ -10,6 +11,11 @@
 (1-n)
 10 atributos (nome lõgico, tipo-logico/fisico[], tamanho-logico/fisico[], descrição) (rastrear exclusões)
 
+## Atualização
+- Maior por campos e tipos (tendencia a maior consulta no processo de atualização para identificar se já existe)
+- 2nd maior por Schema (estrutura)
+- Inclusão de nova collection mais rara (pode haver poucas situações de sistemas com criação frequente de collections)
+- BD geralmente é criado quando há criação de novo microsserviço ou sistema usando o MongoDB
 
 ## Consultas:
 - por nome/descrição do campo

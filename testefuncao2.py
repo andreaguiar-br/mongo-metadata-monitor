@@ -2,7 +2,8 @@
 import pymongo
 import pymongo.results
 
-def atualizaMetadadosCollection(servidor, docMetadados):
+
+def atualizaMetadadosCollection(servidor: str, docMetadados: dict) -> dict:
     """
     Atualização de metadados da colection.
     Argumentos: 
@@ -12,13 +13,13 @@ def atualizaMetadadosCollection(servidor, docMetadados):
     """
     
     # returar a linha abaixo
-    # servidor = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
+    servidor = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
 
     #coleção e BD de armazenamento
     collectonStore = servidor["mdbmmd"]["colecaoMongo"]
 
     docCompletoInclusao = {
-        "uriServidor": docMetadados["host"],
+        "nomeServidor": docMetadados["host"],
         "nomeDatabase" : docMetadados["db"],
         "nomeFisico": docMetadados["collection"],
         "estrutura" : [],
@@ -54,7 +55,7 @@ def atualizaMetadadosCollection(servidor, docMetadados):
 
     #Processo de atualização dos metadados no repositório
     chaveDoc = { 
-        "uriServidor": docMetadados["host"],
+        "nomeServidor": docMetadados["host"],
         "nomeDatabase" : docMetadados["db"],
         "nomeFisico": docMetadados["collection"]}
 
@@ -92,7 +93,16 @@ def atualizaMetadadosCollection(servidor, docMetadados):
     # print('add campos:', 'match:', infoInsert.matched_count,'atualizados',infoInsert.modified_count)    
     return {'codigo': 000, 'message':"Estrutura Atualizada"}
 
-# db.students.updateOne(
+# db.clienteOne.aggregate([{$match: {"_id":"X"}},{$project: { _id:0, newMatriz: {$concatArrays: ["$matriz", ["X"]]}}},{$project:{ "newMatriz":"$newMatriz", newMatrizSize:{ $size: "$newMatriz"}}}])
+# retorna apenas o array campos 
+# db.colecaoMongo.aggregate([{$match:{"_id":ObjectId('5fee466060ea66a9b058fcfb')}},{$unwind: "$estrutura"},{$match:{"estrutura.versao":2}},{$project:{"_id":0,"campos":"$estrutura.campos"}}]).pretty()
+# db.colecaoMongo.aggregate([{$match:{"_id":ObjectId('5fee466060ea66a9b058fcfb')}},{$unwind: "$estrutura"},{$match:{"estrutura.versao":2}},{$project:{"_id":0,"campos":{$concatArrays: ["$estrutura.campos",[{"nomeFisico": "_id", "tipo": "bool","desc":"abcd"},{"nomeFisico":"sexo", "tipo":"string"}]]}}},{$unwind: "$campos"},{$group:{"_id":"$campos.nomeFisico", "campos":{"$last":"$campos"}}},{$project:{"_id":0}},{$group:{"_id":null,"campos": {$addToSet:"$campos"}}}]).pretty()
+# db.colecaoMongo.aggregate([{$match:{"_id":ObjectId('5fee466060ea66a9b058fcfb')}},{$unwind: "$estrutura"},{$match:{"estrutura.versao":2}},{$project:{"_id":0,"campos":{$concatArrays: ["$estrutura.campos",[{"nomeFisico": "_id", "tipo": "bool","desc":"abcd"},{"nomeFisico":"sexo", "tipo":"string"}]]}}},{$unwind: "$campos"},{$group:{"_id":"$campos.nomeFisico", "campos":{"$mergeObjects":"$campos"}}},{$project:{"_id":0}},{$group:{"_id":null,"campos": {$addToSet:"$campos"}}}])
+# pegar pipes anteriores e tentar agrupar o tipo em um array (ver se usa o $facet)
+# db.colecaoMongo.aggregate([{$match:{"_id":ObjectId('5fee466060ea66a9b058fcfb')}},{$unwind: "$estrutura"},{$match:{"estrutura.versao":2}},{$project:{"_id":0,"campos":{$concatArrays: ["$estrutura.campos",[{"nomeFisico": "_id", "tipo": "bool","desc":"abcd"},{"nomeFisico":"sexo", "tipo":"string"}]]}}},{$unwind: "$campos"},{$project:{"_id":0, "campos.nomeFisico":1,"campos.tipo":1}},{$group:{"_id":"$campos.nomeFisico","tipo":{$addToSet:"$campos.tipo"}}}])
+# Facet 1- db.colecaoMongo.aggregate([{$match:{"_id":ObjectId('5fee466060ea66a9b058fcfb')}},{$unwind: "$estrutura"},{$match:{"estrutura.versao":2}},{$project:{"_id":0,"campos":{$concatArrays: ["$estrutura.campos",[{"nomeFisico": "_id", "tipo": "bool","desc":"abcd"},{"nomeFisico":"sexo", "tipo":"string"}]]}}},{$unwind: "$campos"},{$project:{"_id":0, "campos.nomeFisico":1,"campos.tipo":1}},{$group:{"_id":"$campos.nomeFisico","tipo":{$addToSet:"$campos.tipo"}}},{$group:{"_id":null, "campos":{"$addToSet": {"nomeFisico":"$_id" , "tipo": "$tipo"}}}},{$project:{"_id":0}}]
+# 
+#     db.students.updateOne(
 #    { grades: { $gte: 100 } },
 #    { $set: { "grades.$[element]" : 100 } },
 #    { arrayFilters: [ { "element": { $gte: 100 } } ] }
@@ -102,7 +112,7 @@ def atualizaMetadadosCollection(servidor, docMetadados):
 # arrayFilters: [{"vrs": {$elemMatch:{"versao":docEstruturaInclusao["versao"]}}} ]
     # docUpdate = {
     #     "$set": {
-    #         "uriServidor": docMetadados["host"],
+    #         "nomeServidor": docMetadados["host"],
     #         "nomeDatabase" : docMetadados["db"],
     #         "nomeFisico": docMetadados["collection"],
     #         "estrutura.$": docEstruturaInclusao
@@ -129,7 +139,7 @@ docEstrutura = {'_id': 'objectId',
 #  'estrutura[].campos[].definicao': 'string',
 #  'estrutura[].campos[].inconformidades[]': 'string',
 #  'estrutura[].campos[].nomeFisico': 'string',
-#  'estrutura[].campos[].nomeLogico': 'string',
+ 'estrutura[].campos[].nomeLogico': 'string',
 #  'estrutura[].campos[].tipo': 'string',
 #  'estrutura[].quantidadeRegistros': 'double',
 #  'estrutura[].versao': 'double',
@@ -138,7 +148,7 @@ docEstrutura = {'_id': 'objectId',
  'schema_version': 3 ,
  'nomeFisico': 'string',
  'nomeLogico': 'string',
- 'uriServidor': 'string'}
+ 'nomeServidor': 'string'}
 
 docMetadados = {
      "host": "localhost",

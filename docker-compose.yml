@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongo:
-    image: mongometadatamonitor
+    image: mongometadatamonitor:0.0.1
     hostname: mmmonitor
     container_name: mmmonitor
     # command: ["--replSet", "$${MONGO_REPLICA_SET_NAME}", "--bind_ip_all", "--auth" ]
@@ -12,6 +12,7 @@ services:
       - "8011:8011"
     environment:
       - CHANGE_STREAM_DB=mongo
+      - AMBIENTE_EXECUCAO=DESENV
     #   - MONGO_INITDB_ADMINPASSWORD=mongopass
     #   - MONGO_REPLICA_SET_NAME=rsmongo
     networks:

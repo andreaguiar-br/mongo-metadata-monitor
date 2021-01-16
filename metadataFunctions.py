@@ -2,6 +2,7 @@ import json
 import pymongo
 from datetime import datetime, timezone
 import pytz
+import util
 
 
 
@@ -25,7 +26,7 @@ typePy2mongo = {
     "Byte" : "binData"
 
 }
-def getMetadados( servidorMongo, docChangeStream ):
+def getMetadados( mongoServerAddress: str, docChangeStream : dict ) -> dict:
     '''
     Gera documento JSON com metadados extraídos do documento gerado pelo Change Stream do MongoDB.
 
@@ -41,7 +42,7 @@ def getMetadados( servidorMongo, docChangeStream ):
     # print("### Gravando Metadados ###")
     # identificando a versão da estrutura (schema)
  
-    if  servidorMongo == '' :
+    if  mongoServerAddress == '' :
         raise "Parametro 'servidorMongo' não localizado"
 
     if "schema_version" in docChangeStream["fullDocument"]:
@@ -49,7 +50,7 @@ def getMetadados( servidorMongo, docChangeStream ):
     else:
         versaoEstrutura=None
 
-    return {"host":servidorMongo,
+    return {"host":mongoServerAddress,
         "db": docChangeStream["ns"]["db"],
         "collection": docChangeStream["ns"]["coll"],
         "estrutura": doctipo,
@@ -120,7 +121,7 @@ def getTypeArrayDoc( arrayParm ):
 # import pymongo
 # import pymongo.results
 
-def atualizaMetadadosCollection(servidor, docMetadados):
+def atualizaMetadadosCollection(docMetadados:dict):
     """
     Atualização de metadados da colection.
     Argumentos: 
@@ -137,11 +138,13 @@ def atualizaMetadadosCollection(servidor, docMetadados):
 
     if docMetadados["db"] == "mdbmmd" and docMetadados["collection"]=="colecaoMongo":
         return {'codigo': 100, 'message':"gravação do proprio schema do monitor de metadados não deve ser realizada"}
+
     #coleção e BD de armazenamento
+    servidor = util._conexao
     collectonStore = servidor["mdbmmd"]["colecaoMongo"]
 
     docCompletoInclusao = {
-        "uriServidor": docMetadados["host"],
+        "nomeServidor": docMetadados["host"],
         "nomeDatabase" : docMetadados["db"],
         "nomeFisico": docMetadados["collection"],
         "estrutura" : [],
@@ -179,7 +182,7 @@ def atualizaMetadadosCollection(servidor, docMetadados):
 
     #Processo de atualização dos metadados no repositório
     chaveDoc = { 
-        "uriServidor": docMetadados["host"],
+        "nomeServidor": docMetadados["host"],
         "nomeDatabase" : docMetadados["db"],
         "nomeFisico": docMetadados["collection"]}
 

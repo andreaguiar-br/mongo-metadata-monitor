@@ -1,0 +1,131 @@
+{
+    "_schema": "http://json-schema.org/draft-07/schema",
+    "_idOriginal": "http://example.com/example.json",
+    "_id": "x",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "required": [
+        "_id",
+        "nome",
+        "tipoPessoa",
+        "CPF",
+        "dtNascimento",
+        "ocupacoes"
+    ],
+    "properties": {
+        "_id": {
+            "_id": "#/properties/_id",
+            "type": "string",
+            "title": "The _id schema",
+            "description": "An explanation about the purpose of this instance."
+        },
+        "nome": {
+            "_id": "#/properties/nome",
+            "type": "string",
+            "title": "The nome schema",
+            "description": "An explanation about the purpose of this instance."
+        },
+        "tipoPessoa": {
+            "_id": "#/properties/tipoPessoa",
+            "type": "integer",
+            "title": "The tipoPessoa schema",
+            "description": "An explanation about the purpose of this instance."
+        },
+        "CPF": {
+            "_id": "#/properties/CPF",
+            "type": "string",
+            "title": "The CPF schema",
+            "description": "An explanation about the purpose of this instance."
+        },
+        "dtNascimento": {
+            "_id": "#/properties/dtNascimento",
+            "type": "string",
+            "title": "The dtNascimento schema",
+            "description": "An explanation about the purpose of this instance."
+        },
+        "ocupacoes": {
+            "_id": "#/properties/ocupacoes",
+            "type": "array",
+            "title": "The ocupacoes schema",
+            "description": "An explanation about the purpose of this instance.",
+            "additionalItems": true,
+            "items": {
+                "_id": "#/properties/ocupacoes/items",
+                "anyOf": [
+                    {
+                        "_id": "#/properties/ocupacoes/items/anyOf/0",
+                        "type": "object",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "required": [
+                            "ocupacao",
+                            "dtInicio",
+                            "rendimento",
+                            "empregador"
+                        ],
+                        "properties": {
+                            "ocupacao": {
+                                "_id": "#/properties/ocupacoes/items/anyOf/0/properties/ocupacao",
+                                "type": "string",
+                                "title": "The ocupacao schema",
+                                "description": "An explanation about the purpose of this instance."
+                            },
+                            "dtInicio": {
+                                "_id": "#/properties/ocupacoes/items/anyOf/0/properties/dtInicio",
+                                "type": "string",
+                                "title": "The dtInicio schema",
+                                "description": "An explanation about the purpose of this instance."
+                            },
+                            "rendimento": {
+                                "_id": "#/properties/ocupacoes/items/anyOf/0/properties/rendimento",
+                                "type": "object",
+                                "title": "The rendimento schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "required": [
+                                    "valor",
+                                    "anoMesRef"
+                                ],
+                                "properties": {
+                                    "valor": {
+                                        "_id": "#/properties/ocupacoes/items/anyOf/0/properties/rendimento/properties/valor",
+                                        "type": "number",
+                                        "title": "The valor schema",
+                                        "description": "An explanation about the purpose of this instance."
+                                    },
+                                    "anoMesRef": {
+                                        "_id": "#/properties/ocupacoes/items/anyOf/0/properties/rendimento/properties/anoMesRef",
+                                        "type": "integer",
+                                        "title": "The anoMesRef schema",
+                                        "description": "An explanation about the purpose of this instance."
+                                    }
+                                },
+                                "additionalProperties": true
+                            },
+                            "empregador": {
+                                "_id": "#/properties/ocupacoes/items/anyOf/0/properties/empregador",
+                                "type": "object",
+                                "title": "The empregador schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "required": [
+                                    "cliente"
+                                ],
+                                "properties": {
+                                    "cliente": {
+                                        "_id": "#/properties/ocupacoes/items/anyOf/0/properties/empregador/properties/cliente",
+                                        "type": "string",
+                                        "title": "The cliente schema",
+                                        "description": "An explanation about the purpose of this instance."
+                                    }
+                                },
+                                "additionalProperties": true
+                            }
+                        },
+                        "additionalProperties": true
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": true
+}

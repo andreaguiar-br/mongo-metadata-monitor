@@ -1,0 +1,55 @@
+{
+    "_id": 1 ,
+    "nomeServidor": "localhost",
+    "nomeDatabase": "mdbmci",
+    "nomeFisico": "cliente",
+    "nomeLogico": "cliente",
+    "definicao": "Pessoa fisica ou jurídica que o Banco possui ou tem interesse em relacionamento negocial",
+    "estrutura": [ 
+        {
+            "collection_id": 1,
+            "versao": 1,
+            "quantidadeRegistros": 0,
+            "campos": [
+                {
+                    "nomeFisico": "nome",
+                    "tipo": "string",
+                    "nomeLogico": "Nome do cliente",
+                    "definicao": "Nome ou razão social do cliente",
+                    "inconformidades": [
+                        "padrão nome",
+                        "sem nome logico",
+                        "sem conceito descrito",
+                        "..."
+                    ]
+                },
+                {
+                    "nomeFisico": "tipoPessoa",
+                    "tipo": "integer",
+                    "nomeLogico": "codigo do tipo de pessoa",
+                    "definicao": "Código que identifica o tipo de pessoa (1=fisico, 2=juridica)",
+                    "inconformidades": [
+                        "padrão nome",
+                        "sem nome logico",
+                        "sem conceito descrito",
+                        "..."
+                    ]
+                },
+                {
+                    "nomeFisico": "CPF",
+                    "tipo": "string",
+                    "nomeLogico": "Numero do CPF",
+                    "definicao": "Numero de Inscrição no Cadastro de Pessoas Fisicas da Receita Federal",
+                    "inconformidades": [
+                        "padrão nome",
+                        "sem nome logico",
+                        "sem conceito descrito",
+                        "..."
+                    ]
+                }
+            ]
+        }
+    ],
+    "indConformidade": false
+    
+}

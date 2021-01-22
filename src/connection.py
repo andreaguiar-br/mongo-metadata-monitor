@@ -1,7 +1,7 @@
 '''
 Utilitários para conexão com o Mongo usado para monitoração (ChangeStream)
 '''
-
+import logging
 import os
 import pymongo
 import pprint
@@ -38,7 +38,8 @@ def _conectWatchDB(mongoServerAddress: str ) -> pymongo.MongoClient:
     _password = "mongopass"
 
 
-    print('*** Conectando [CHANGE_STREAM_DB]..',"mongodb://"+_username+":'password'@"+mongoServerAddress+"/admin?retryWrites=true")
+    logging.debug('*** Conectando [CHANGE_STREAM_DB] -> mongodb://%s:*******@%s/admin?retryWrites=true',_username,mongoServerAddress)
+    # print('*** Conectando [CHANGE_STREAM_DB]..',"mongodb://"+_username+":'password'@"+mongoServerAddress+"/admin?retryWrites=true")
     # client = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
     # client = pymongo.MongoClient("mongodb://root:mongopass@"+os.environ['CHANGE_STREAM_DB']+"/admin?retryWrites=true")
 
@@ -62,7 +63,8 @@ def _conectMetadataDB( ) -> pymongo.MongoClient:
     _usernameSchemaDB = "root"
     _passwordSchemaDB = "mongopass"
 
-    print('*** Conectando [SCHEMA_DB]..',"mongodb://"+_usernameSchemaDB+":'password'@"+_mongoServerSchemaDB+"/admin?retryWrites=true")
+    logging.debug('*** Conectando [SCHEMA_DB] -> mongodb://%s:*******@%s/admin?retryWrites=true',_usernameSchemaDB,_mongoServerSchemaDB)
+    # print('*** Conectando [SCHEMA_DB]..',"mongodb://"+_usernameSchemaDB+":'password'@"+_mongoServerSchemaDB+"/admin?retryWrites=true")
     # client = pymongo.MongoClient("mongodb://root:mongopass@127.0.0.1/admin?retryWrites=true")
     # client = pymongo.MongoClient("mongodb://root:mongopass@"+os.environ['CHANGE_STREAM_DB']+"/admin?retryWrites=true")
 
@@ -88,21 +90,23 @@ FILTRO_MONGO_WATCH = [
      {'$match': {'ns.db': {'$ne': 'mdbmmd'}, 'ns.coll': {'$ne': 'colecaoMongo'}}}
 ]
 
-print ("*"*40)
-print ("*** Configurando a Conexão ")
-print ("*"*40)
+logging.info("*"*40)
+logging.info ("*** Configurando a Conexão ")
+logging.info ("*"*40)
 
 if not 'CHANGE_STREAM_DB' in os.environ:
+    logging.error('Variável de ambiente CHANGE_STREAM_DB não localizada')
     raise OSError('Variável de ambiente CHANGE_STREAM_DB não localizada')
 
 if not 'SCHEMA_DB' in os.environ:
+    logging.error('Variável de ambiente SCHEMA_DB não localizada')
     raise OSError('Variável de ambiente SCHEMA_DB não localizada')
 
 # Identificação das configurações de conexão
 mongoServerAddress = os.environ['CHANGE_STREAM_DB'] 
-print ("*** CHANGE_STREAM_DB="+mongoServerAddress)
+logging.info ("*** CHANGE_STREAM_DB=%s",mongoServerAddress)
 _mongoServerSchemaDB = os.environ['SCHEMA_DB'] 
-print ("*** SCHEMA_DB="+_mongoServerSchemaDB)
+logging.info ("*** SCHEMA_DB=%s",_mongoServerSchemaDB)
 
 
 

@@ -3,6 +3,7 @@ import pymongo
 from datetime import datetime, timezone
 import pytz
 from connection import getSchemaDBConnection
+import logging
 
 
 
@@ -59,7 +60,8 @@ def atualizaMetadadosCollection(docMetadados:dict):
 
     docCompletoInclusao["estrutura"] = [docEstruturaInclusao]
 
-    # print("\nmetadados:",docCompletoInclusao)
+ 
+    logging.debug("atualizaMetadadosCollection - Documento Completo:%s",json.dumps(docCompletoInclusao))
 
     #Processo de atualização dos metadados no repositório
     chaveDoc = { 
@@ -68,10 +70,9 @@ def atualizaMetadadosCollection(docMetadados:dict):
         "nomeFisico": docMetadados["collection"]}
 
     docDB = schemaCollection.find_one(chaveDoc)
-    # print(chaveDoc)
-    # print("\nachei?\n:",docDB)
+    
     if not docDB:
-        # print(True)
+        # inserindo novo documento na collection
         infoCmdDB = schemaCollection.insert_one(docCompletoInclusao)
         if infoCmdDB.acknowledged:
             # print(infoInsert)
@@ -90,7 +91,7 @@ def atualizaMetadadosCollection(docMetadados:dict):
         #se atualizou(incluiu a estrutura), retorna ok, senão, continua para atualizar a estrutura
         if infoCmdDB.modified_count > 0 :
             # print('insert estrutura:', infoInsert.raw_result)    
-            return {'codigo': 000, 'message':"Estrutura Inserida"}
+            return {'codigo': 000, 'message':"Documento já existe. Versão da estrutura adicionada"}
     
     # print('\nAtualizando campos para ',docEstruturaInclusao["versao"], 'em', docDB["estrutura"])
     docAtualizacao = {"$inc": {"estrutura.$[vrs].quantidadeRegistros":1},

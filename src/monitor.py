@@ -95,7 +95,10 @@ def getMetadados( mongoServerAddress: str, docChangeStream : dict ) -> dict:
         if len(arrayTipo) > 1 :
             docArray['[]']= arrayTipo
         else:
-            docArray['[]']= arrayTipo[0]
+            if len(arrayTipo) == 1 :
+                docArray['[]']= arrayTipo[0]
+            else:
+                docArray['[]']= 'null'
         return docArray
 
 

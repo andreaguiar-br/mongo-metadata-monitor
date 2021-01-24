@@ -34,7 +34,7 @@ import json
 from connection import getMongoWatch, mongoServerAddress
 from monitor import getMetadados
 from bson.json_util import dumps
-from metadataFunctions import atualizaMetadadosCollection
+from metadataFunctions import atualizaMetadadosCollection, atualizaMetadadosCollection3
 import pprint
 
 ## Recupera objeto changeStream para iteração
@@ -60,6 +60,8 @@ for change in mongoChangeStream:
 
         docMetadados = getMetadados(mongoServerAddress, change)
         resGrav = atualizaMetadadosCollection(docMetadados)
+        # resGrav = atualizaMetadadosCollection2(docMetadados)
+        resGrav = atualizaMetadadosCollection3(docMetadados)
         logging.info(json.dumps(resGrav))
    
 

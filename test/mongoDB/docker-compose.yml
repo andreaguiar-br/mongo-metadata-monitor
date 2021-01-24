@@ -1,0 +1,47 @@
+version: "3.4"
+services:
+  mongo:
+    image: mongo
+    hostname: mongodb
+    container_name: mongodb
+    command: ["--replSet", "$${MONGO_REPLICA_SET_NAME}", "--bind_ip_all", "--auth" ]
+    volumes: 
+      - vol-mongo:/data/db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ADMINUSER=root
+      - MONGO_INITDB_ADMINPASSWORD=mongopass
+      - MONGO_REPLICA_SET_NAME=rsmongo
+    networks:
+      - net-backend
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ADMINUSER} -p $${MONGO_INITDB_ADMINPASSWORD}  --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    depends_on: 
+      - mongo
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=mongopass
+
+    networks: 
+      - net-backend
+      - net-frontend
+      
+networks:
+  net-backend:
+    driver: bridge
+  net-frontend:
+    driver: bridge
+
+volumes:
+  vol-mongo:

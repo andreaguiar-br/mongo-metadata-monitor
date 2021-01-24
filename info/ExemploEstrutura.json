@@ -1,0 +1,234 @@
+{
+   "_id": "600cb59fdbaa1a27d8b2ff80" ,
+    "nomeServidor": "mongo",
+    "nomeDatabase": "kaggle",
+    "nomeFisico": "colecaoExemplo",
+    "estrutura": {
+        "versao-0": {
+            "versao": null,
+            "qtRegistros": 1,
+            "qtCampos": 27,
+            "campos": {
+               "_id": {
+                  "nomeFisicoCompleto": "_id",
+                    "nomeFisico": "_id",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "objectId"
+                    ]
+                },
+                "uriServidor": {
+                  "nomeFisicoCompleto": "uriServidor",
+                    "nomeFisico": "uriServidor",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "dbName": {
+                  "nomeFisicoCompleto": "dbName",
+                    "nomeFisico": "dbName",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]": {
+                  "nomeFisicoCompleto": "collections[]",
+                    "nomeFisico": "collections[]",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "object"
+                    ]
+                },
+                "collections[]/name": {
+                  "nomeFisicoCompleto": "collections[].name",
+                    "nomeFisico": "name",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/logicalName": {
+                  "nomeFisicoCompleto": "collections[].logicalName",
+                    "nomeFisico": "logicalName",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/concept": {
+                  "nomeFisicoCompleto": "collections[].concept",
+                    "nomeFisico": "concept",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields": {
+                  "nomeFisicoCompleto": "collections[].fields",
+                    "nomeFisico": "fields",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "object"
+                    ]
+                },
+                "collections[]/fields/nome": {
+                  "nomeFisicoCompleto": "collections[].fields.nome",
+                    "nomeFisico": "nome",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "object"
+                    ]
+                },
+                "collections[]/fields/nome/name": {
+                  "nomeFisicoCompleto": "collections[].fields.nome.name",
+                    "nomeFisico": "name",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/nome/dataType": {
+                  "nomeFisicoCompleto": "collections[].fields.nome.dataType",
+                    "nomeFisico": "dataType",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/nome/logicalName": {
+                  "nomeFisicoCompleto": "collections[].fields.nome.logicalName",
+                    "nomeFisico": "logicalName",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/nome/concept": {
+                  "nomeFisicoCompleto": "collections[].fields.nome.concept",
+                    "nomeFisico": "concept",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/nome/inconformidades[]": {
+                  "nomeFisicoCompleto": "collections[].fields.nome.inconformidades[]",
+                    "nomeFisico": "inconformidades[]",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa",
+                    "nomeFisico": "tipoPessoa",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "object"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa/name": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa.name",
+                    "nomeFisico": "name",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa/dataType": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa.dataType",
+                    "nomeFisico": "dataType",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa/logicalName": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa.logicalName",
+                    "nomeFisico": "logicalName",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa/concept": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa.concept",
+                    "nomeFisico": "concept",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/tipoPessoa/inconformidades[]": {
+                  "nomeFisicoCompleto": "collections[].fields.tipoPessoa.inconformidades[]",
+                    "nomeFisico": "inconformidades[]",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/CPF": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF",
+                    "nomeFisico": "CPF",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "object"
+                    ]
+                },
+                "collections[]/fields/CPF/name": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF.name",
+                    "nomeFisico": "name",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/CPF/dataType": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF.dataType",
+                    "nomeFisico": "dataType",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/CPF/logicalName": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF.logicalName",
+                    "nomeFisico": "logicalName",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/CPF/concept": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF.concept",
+                    "nomeFisico": "concept",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/fields/CPF/inconformidades[]": {
+                  "nomeFisicoCompleto": "collections[].fields.CPF.inconformidades[]",
+                    "nomeFisico": "inconformidades[]",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                },
+                "collections[]/indConformidade": {
+                  "nomeFisicoCompleto": "collections[].indConformidade",
+                    "nomeFisico": "indConformidade",
+                  "dtInclusao":    "2021-01-23T23:47:43.618Z" ,
+                  "tipo": [
+                        "string"
+                    ]
+                }
+            },
+          "dtInclusao":    "2021-01-23T23:47:43.618Z"
+        }
+    },
+    "indConformidade": null,
+  "dtInclusao":    "2021-01-23T23:47:43.618Z"
+}

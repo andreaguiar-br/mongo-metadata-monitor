@@ -1,0 +1,9 @@
+
+//habilitando a collection para o programa na criação da collection
+db.createRole( { role: "userpgm", privileges:[], roles:[{ role:"read", db:"kaggle"}]});  //pode ser criado na criação do database
+db.grantPrivilegesToRole("userpgm",[ {resource: { db: "kaggle" , collection: "cliente2"}, actions: [ "find", "insert", "update", "remove" ] }])
+
+//habilitando o papel do usuário de monitoração (changeStream)
+db.grantPrivilegesToRole("changeMonitorDeployment",[{ resource: { db: "", collection: "" }, actions: [ "find", "changeStream" ] }])
+db.grantPrivilegesToRole("changeMonitorDatabase",[{ resource: { db: "<database", collection: "" }, actions: [ "find", "changeStream" ] }])
+db.grantPrivilegesToRole("changeMonitorCollectioon",[{ resource: { db: "<database>", collection: "<collection>" }, actions: [ "find", "changeStream" ] }])

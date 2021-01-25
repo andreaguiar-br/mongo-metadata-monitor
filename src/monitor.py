@@ -33,13 +33,51 @@ def getMetadados( mongoServerAddress: str, docChangeStream : dict ) -> dict:
     parametros:
     servidorMongo - Servidor mongoDB usado para conexão e observação dos metadados
     docChamStream - Documento gerado pelo evento de ChangeStream e que terá seus metadados extraídos
+    
+    Retorna:
+        Documento no formato:
 
-    retorna:
-    documento com os metadados em padrão pre-definido.
+        {
+            "host":<string>,
+            "db": <string>,
+            "collection": <string>,
+            "estrutura": docMetadados*,
+            "versao": <valor>|null
+        }
+
+        * docMetadados - documento no padrão:
+        {
+            "nomeDoCampo1":"dataType",                          <-- Campo Simples
+            "nomeDoCampoDocumento2":"Object",                   <-- Campo do Tipo Documento recebem dataType "Object"
+            "nomeDoCampoDocumento2.nomeDoCampo1": "dataType",   <-- Campos de um documento recebem o nome do campo pai
+            "nomeDoCampoArray1[]": "dataType",                  <-- Campos no formato array recebem o simbolo "[]" ao final.
+            "nomeDoCampoArray2[]": "Object",                    <-- Campo Array de Objeto
+            "nomeDoCampoArray2[].nomeDoCampo1": "dataType"      <-- Campos de um array de documento, possuem "[]" no nome do campo pai
+        }
     '''
+
+
   
 
     def getTypeDoc( docParm ):
+        
+        '''
+        Extrai typos de dados de um documento.
+        
+        Parmametros:
+            - docParm: variável no formato JSON
+        Retorna:
+            - documento com os metadados em padrão pre-definido.
+        {
+            "nomeDoCampo1":"dataType",                          <-- Campo Simples
+            "nomeDoCampoDocumento2":"Object",                   <-- Campo do Tipo Documento recebem dataType "Object"
+            "nomeDoCampoDocumento2.nomeDoCampo1": "dataType",   <-- Campos de um documento recebem o nome do campo pai
+            "nomeDoCampoArray1[]": "dataType",                  <-- Campos no formato array recebem o simbolo "[]" ao final.
+            "nomeDoCampoArray2[]": "Object",                    <-- Campo Array de Objeto
+            "nomeDoCampoArray2[].nomeDoCampo1": "dataType"      <-- Campos de um array de documento, possuem "[]" no nome do campo pai
+        }
+        '''
+
         docTipo = {}
         for campo, valor in docParm.items() :
             if type(valor).__name__ == 'dict':

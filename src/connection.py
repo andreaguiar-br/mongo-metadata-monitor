@@ -111,6 +111,11 @@ logging.info ("*** SCHEMA_DB=%s",_mongoServerSchemaDB)
 
 
 _conexao  = _conectWatchDB(mongoServerAddress)
+logging.info("*** Conectado. Escutando servidor %s:%s",str(_conexao.address[0]),str(_conexao.address[1]))
+
+# recupera o servidor mongoDB conectado
+mongoConnectedServer = str(_conexao.address[0])
+
 _conexaoSchemaDB = _conectMetadataDB()
 
 print('\n',"*"*60,'\n **     MongoDB Server Information [CHANGE_STREAM_DB]     ***\n',"*"*60)

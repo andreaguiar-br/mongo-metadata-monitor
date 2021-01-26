@@ -122,4 +122,4 @@ print('\n',"*"*60,'\n **     MongoDB Server Information [CHANGE_STREAM_DB]     *
 pprint.pprint(_conexao.server_info())
 
 print('\n',"*"*60,'\n **        MongoDB Server Information [SCHEMA_DB]         ***\n',"*"*60)
-pprint.pprint(_conexao.server_info())
+pprint.pprint(_conexaoSchemaDB.server_info())

@@ -5,7 +5,9 @@ import logging
 import os
 import pymongo
 import pprint
-import connection
+# import connection
+from datetime import datetime, timedelta
+from bson import timestamp
 
 #####################################################################
 ## Funções
@@ -22,7 +24,20 @@ def getMongoWatch():
     ''' 
         Retorna a objeto ChangeStream do MongoDB utilizada para iteração 
     '''
-    return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH)  
+    #TODO: Revisar lógica pensando em multiplas instancias e versões - compatibilidade de tokens.
+    if int(_conexaoServerVersion[0]) >= 4 :
+        if _resumeToken is None:
+            return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH, start_at_operation_time=TIMESTAMP_INICIO_WATCH)  
+        else:
+            if int(_conexaoServerVersion[1]) >= 2 :  #startAfter só funciona a partir da versão 4.2
+                return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH, start_after=_resumeToken) 
+            else: 
+                return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH, resume_after=_resumeToken)  
+    else:
+        if _resumeToken is None:
+            return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH)  
+        else:
+            return _conexao.watch(full_document='updateLookup', pipeline=FILTRO_MONGO_WATCH, resume_after=_resumeToken)   
     
 
 def _conectWatchDB(mongoServerAddress: str ) -> pymongo.MongoClient:
@@ -77,6 +92,30 @@ def _conectMetadataDB( ) -> pymongo.MongoClient:
         authMechanism='SCRAM-SHA-256')
 
 
+def getSavedResumeToken():
+    controlCollection = getSchemaDBConnection()["mdbmmd"]["controleProcessamento"] 
+    # TODO controlKey = ID da sessão de watch (pegar parametro de env) para usar com chave de atualização e busca
+    docControle = controlCollection.find_one(filter={"_id": 1})
+    if not docControle :
+        return None
+    else:
+        if "resumeToken" in docControle:
+            return docControle["resumeToken"]
+        else:
+            return None   
+
+def setSavedResumeToken(resumeToken):
+    controlCollection = getSchemaDBConnection()["mdbmmd"]["controleProcessamento"] 
+    # TODO controlKey = ID da sessão de watch (pegar parametro de env) para usar com chave de atualização e busca
+    infoCmdDB = controlCollection.update_one({"_id": 1},{"$set":{"resumeToken":resumeToken}},upsert=True)
+    if infoCmdDB.modified_count == 0 :
+        # print('insert estrutura:', infoInsert.raw_result)    
+        return {'codigo': 000, 'message':"ResumeToken não salvo"}
+    else:
+        return {'codigo': 000, 'message':"ResumeToken atualizado"}
+
+
+
 
 ##############################################################
 # EXECUÇÃO INICIAL
@@ -89,6 +128,7 @@ FILTRO_MONGO_WATCH = [
     {'$match': {'operationType': {'$in': ['insert', 'delete', 'replace', 'update', 'rename', 'drop']}}},
      {'$match': {'ns.db': {'$ne': 'mdbmmd'}, 'ns.coll': {'$ne': 'colecaoMongo'}}}
 ]
+
 
 logging.info("*"*40)
 logging.info ("*** Configurando a Conexão ")
@@ -108,15 +148,33 @@ logging.info ("*** CHANGE_STREAM_DB=%s",mongoServerAddress)
 _mongoServerSchemaDB = os.environ['SCHEMA_DB'] 
 logging.info ("*** SCHEMA_DB=%s",_mongoServerSchemaDB)
 
+# conectando no BD de atualização dos schemas
+_conexaoSchemaDB = _conectMetadataDB()
 
-
+#conectando no BD de Observação do Change Stream
 _conexao  = _conectWatchDB(mongoServerAddress)
 logging.info("*** Conectado. Escutando servidor %s:%s",str(_conexao.address[0]),str(_conexao.address[1]))
 
-# recupera o servidor mongoDB conectado
+# Identificando versão do BD de Observação
+_conexaoServerVersion = tuple(_conexao.server_info()['version'].split('.'))
+logging.info("*** Versão identificada [CHANGE_STREAM_DB]: %s",str(_conexaoServerVersion))
+
+# Parametro para o comando 'watch' só disponivel para versão mongo acima da 4.0 
+_diasReinicio = os.getenv("CHANGE_STREAM_DIAS_REINICIO","0")
+logging.info("*** CHANGE_STREAM_DIAS_REINICIO=%s",_diasReinicio)
+
+TIMESTAMP_INICIO_WATCH=timestamp.Timestamp(datetime.utcnow() - timedelta(days=int(_diasReinicio)),0)  #retroage 3 dias na busca de dados
+# TIMESTAMP_INICIO_WATCH=_conexao.server_info()["$clusterTime"]["clusterTime"]
+_resumeToken = getSavedResumeToken()
+if _resumeToken is None:
+    logging.info("*** Iniciando o Watch a partir de %s (UTC)",str(TIMESTAMP_INICIO_WATCH.as_datetime()))
+else:
+    logging.info("*** Iniciando o Watch a partir do token %s ",str(_resumeToken))
+
+# recupera o servidor mongoDB conectado para Change Stream
 mongoConnectedServer = str(_conexao.address[0])
 
-_conexaoSchemaDB = _conectMetadataDB()
+
 
 print('\n',"*"*60,'\n **     MongoDB Server Information [CHANGE_STREAM_DB]     ***\n',"*"*60)
 pprint.pprint(_conexao.server_info())

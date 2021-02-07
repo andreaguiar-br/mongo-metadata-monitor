@@ -14,6 +14,7 @@ services:
       - CHANGE_STREAM_DB=mongo
       - AMBIENTE_EXECUCAO=DESENV
       - SCHEMA_DB=mongo
+      - CHANGE_STREAM_DIAS_REINICIO=1
       # - LOG_LEVEL=DEBUG
     #   - MONGO_INITDB_ADMINPASSWORD=mongopass
     #   - MONGO_REPLICA_SET_NAME=rsmongo

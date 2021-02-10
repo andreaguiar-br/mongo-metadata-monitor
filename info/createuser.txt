@@ -1,2 +1,6 @@
 > db.createUser({user:"root", pwd:"mongopass", roles:[ {role:"dbAdmin", db:"Admin" }]})
 
+db.createUser({user:"MDBIMMD01", pwd:"meta$monitor", roles:[ {role:"readWrite", db:"mdbmmd-metadataMonitor" }]})
+db.grantRolesToUser( "MDBIMMD01", [ {role:"readWrite", db:"mdbmmd-metadataMonitor" } ] )
+db.grantRolesToUser( "MDBIMMD01", [ {role:"readWrite", db:"mdbmmd-metadataMonitor" } ] )
+

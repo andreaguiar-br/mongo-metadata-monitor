@@ -59,7 +59,7 @@ for change in mongoChangeStream:
         print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"],'\nDocumento: ', dumps(change["fullDocument"]))
 
         docMetadados = getMetadados(mongoServerAddress, change)
-        resGrav = atualizaMetadadosCollection(docMetadados)
+        # resGrav = atualizaMetadadosCollection(docMetadados)
         # resGrav = atualizaMetadadosCollection2(docMetadados)
         resGrav = atualizaMetadadosCollection3(docMetadados)
         logging.info(json.dumps(resGrav))

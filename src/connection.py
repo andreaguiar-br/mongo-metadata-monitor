@@ -49,8 +49,8 @@ def _conectWatchDB(mongoServerAddress: str ) -> pymongo.MongoClient:
     # TODO: pegar o servidor mongo a partir de variavel ambiente os.environ['CHANGE_STREAM_DB']
     # username = urllib.parse.quote_plus('root')
     # password = urllib.parse.quote_plus('mongopass')
-    _username = "root"
-    _password = "mongopass"
+    _username = "MDBIMMD01"
+    _password = "meta$monitor"
 
 
     logging.debug('*** Conectando [CHANGE_STREAM_DB] -> mongodb://%s:*******@%s/admin?retryWrites=true',_username,mongoServerAddress)
@@ -75,8 +75,8 @@ def _conectMetadataDB( ) -> pymongo.MongoClient:
     # TODO: pegar o servidor mongo a partir de variavel ambiente os.environ['CHANGE_STREAM_DB']
     # username = urllib.parse.quote_plus('root')
     # password = urllib.parse.quote_plus('mongopass')
-    _usernameSchemaDB = "root"
-    _passwordSchemaDB = "mongopass"
+    _usernameSchemaDB = "MDBIMMD01"
+    _passwordSchemaDB = "meta$monitor"
 
     logging.debug('*** Conectando [SCHEMA_DB] -> mongodb://%s:*******@%s/admin?retryWrites=true',_usernameSchemaDB,_mongoServerSchemaDB)
     # print('*** Conectando [SCHEMA_DB]..',"mongodb://"+_usernameSchemaDB+":'password'@"+_mongoServerSchemaDB+"/admin?retryWrites=true")
@@ -88,12 +88,12 @@ def _conectMetadataDB( ) -> pymongo.MongoClient:
         serverSelectionTimeoutMS = 6000, # 3 second timeout
         username=_usernameSchemaDB,
         password=_passwordSchemaDB,
-        authSource='admin', # TODO Mudar para o BD do schema, após criação de usuário específico autorizado para atualizar esse database/colleciton
+        authSource=SCHEMA_DATABASE_NAME, # TODO Mudar para o BD do schema, após criação de usuário específico autorizado para atualizar esse database/colleciton
         authMechanism='SCRAM-SHA-256')
 
 
 def getSavedResumeToken():
-    controlCollection = getSchemaDBConnection()["mdbmmd"]["controleProcessamento"] 
+    controlCollection = getSchemaDBConnection()[SCHEMA_DATABASE_NAME]["controleProcessamento"] 
     # TODO controlKey = ID da sessão de watch (pegar parametro de env) para usar com chave de atualização e busca
     docControle = controlCollection.find_one(filter={"_id": 1})
     if not docControle :
@@ -105,7 +105,7 @@ def getSavedResumeToken():
             return None   
 
 def setSavedResumeToken(resumeToken):
-    controlCollection = getSchemaDBConnection()["mdbmmd"]["controleProcessamento"] 
+    controlCollection = getSchemaDBConnection()[SCHEMA_DATABASE_NAME]["controleProcessamento"] 
     # TODO controlKey = ID da sessão de watch (pegar parametro de env) para usar com chave de atualização e busca
     infoCmdDB = controlCollection.update_one({"_id": 1},{"$set":{"resumeToken":resumeToken}},upsert=True)
     if infoCmdDB.modified_count == 0 :
@@ -121,12 +121,15 @@ def setSavedResumeToken(resumeToken):
 # EXECUÇÃO INICIAL
 ##############################################################
 
+#nome do database de gravação
+SCHEMA_DATABASE_NAME = "mdbmmd-metadataMonitor"
+
 
 # pipeline a ser usado futuramente pra filtrar eventos a serem monitorados e databases. 
 # TODO: (rever o match de ignorar o BD da colecao mongo)
 FILTRO_MONGO_WATCH = [
     {'$match': {'operationType': {'$in': ['insert', 'delete', 'replace', 'update', 'rename', 'drop']}}},
-     {'$match': {'ns.db': {'$ne': 'mdbmmd'}, 'ns.coll': {'$ne': 'colecaoMongo'}}}
+     {'$match': {'ns.db': {'$ne': SCHEMA_DATABASE_NAME}, 'ns.coll': {'$ne': 'colecaoMongo'}}}
 ]
 
 

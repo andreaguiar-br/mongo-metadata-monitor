@@ -53,16 +53,20 @@ mongoChangeStream = getMongoWatch()
 for change in mongoChangeStream:
 
     if change["operationType"] in ['delete', 'drop']:
-       print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"])
+        # print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"])
+        logging.debug('**OPERAÇÃO**:"%s" BD:"%s" **COLLECTION**:"%s"', change["operationType"],change["ns"]["db"],change["ns"]["coll"])
        # tratar drop de database ou collection para atualizar o estado no metadado
     else:
-        print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"],'\nDocumento: ', dumps(change["fullDocument"]))
-
-        docMetadados = getMetadados(mongoServerAddress, change)
-        # resGrav = atualizaMetadadosCollection(docMetadados)
-        # resGrav = atualizaMetadadosCollection2(docMetadados)
-        resGrav = atualizaMetadadosCollection3(docMetadados)
-        logging.info(json.dumps(resGrav))
+        # print('Operação:',change["operationType"],' BD: ', change["ns"]["db"], ' Colection:', change["ns"]["coll"],'\nDocumento: ', dumps(change["fullDocument"]))
+        logging.debug('**OPERACAO**:"%s" BD:"%s" **COLLECTION**:"%s" **DOCUMENTO**:"%s"', change["operationType"],change["ns"]["db"],change["ns"]["coll"], dumps(change["fullDocument"]))
+        if not ( change["fullDocument"] is None) :
+            docMetadados = getMetadados(mongoServerAddress, change)
+            # resGrav = atualizaMetadadosCollection(docMetadados)
+            # resGrav = atualizaMetadadosCollection2(docMetadados)
+            resGrav = atualizaMetadadosCollection3(docMetadados)
+            logging.debug(json.dumps(resGrav))
+        else:
+            logging.warning("Identificado documento 'null' como resultado da Operação '%s' no BD '%s' e Collection '%s' !! Change Document**:'%s'", change["operationType"],change["ns"]["db"],change["ns"]["coll"],dumps(change))
    
 
     

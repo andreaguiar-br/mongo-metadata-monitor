@@ -2,7 +2,7 @@ import json
 import pymongo
 from datetime import datetime, timezone
 import pytz
-from connection import getSchemaDBConnection, SCHEMA_DATABASE_NAME
+from connection import getSchemaDBConnection, METADADOS_DATABASE_NAME
 import logging
 from collections import defaultdict
 
@@ -22,14 +22,14 @@ def atualizaMetadadosCollection(docMetadados:dict):
     dtNow = fuso.localize(dtnow)
 
 
-    if docMetadados["db"] == SCHEMA_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
+    if docMetadados["db"] == METADADOS_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
         return {'codigo': 100, 'message':"gravação do proprio schema do monitor de metadados não deve ser realizada"}
 
     #coleção e BD de armazenamento
     schemaDB = getSchemaDBConnection()
 
     #coleção usada para armazenamento
-    schemaCollection  = schemaDB[SCHEMA_DATABASE_NAME]["colecaoMongo"] 
+    schemaCollection  = schemaDB[METADADOS_DATABASE_NAME]["colecaoMongo"] 
     
 
     docCompletoInclusao = {
@@ -118,15 +118,15 @@ def atualizaMetadadosCollection2(docMetadados:dict):
  
 
 
-    if docMetadados["db"] == SCHEMA_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
+    if docMetadados["db"] == METADADOS_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
         return {'codigo': 100, 'message':"gravação do proprio schema do monitor de metadados não deve ser realizada"}
 
     #coleção e BD de armazenamento
     schemaDB = getSchemaDBConnection()
 
     #coleção usada para armazenamento
-    schemaCollection  = schemaDB[SCHEMA_DATABASE_NAME]["colecaoMongo2"] 
-    estruturaCollection = schemaDB[SCHEMA_DATABASE_NAME]["estruturaColecao2"] 
+    schemaCollection  = schemaDB[METADADOS_DATABASE_NAME]["colecaoMongo2"] 
+    estruturaCollection = schemaDB[METADADOS_DATABASE_NAME]["estruturaColecao2"] 
     
 
     docCompletoInclusao = {
@@ -244,14 +244,14 @@ def atualizaMetadadosCollection3(docMetadados:dict):
     
     dtNowUTC = datetime.utcnow()
 
-    if docMetadados["db"] == SCHEMA_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
+    if docMetadados["db"] == METADADOS_DATABASE_NAME and docMetadados["collection"]=="colecaoMongo":
         return {'codigo': 100, 'message':"gravação do proprio schema do monitor de metadados não deve ser realizada"}
 
     #coleção e BD de armazenamento
     schemaDB = getSchemaDBConnection()
 
     #coleção usada para armazenamento
-    schemaCollection  = schemaDB[SCHEMA_DATABASE_NAME]["colecaoMongoV3"] 
+    schemaCollection  = schemaDB[METADADOS_DATABASE_NAME]["colecaoMongoV3"] 
     # estruturaCollection = schemaDB[SCHEMA_DATABASE_NAME]["estruturaColecao2"] 
     
 

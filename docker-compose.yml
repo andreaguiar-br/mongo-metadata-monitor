@@ -14,7 +14,7 @@ services:
       - WATCH_DB=mongo
       - AMBIENTE_EXECUCAO=DESENV
       - METADADOS_DB=mongo
-      - DIAS_RECUPERACAO_WATCH=30
+      - DIAS_RECUPERACAO_WATCH=1
       # - LOG_LEVEL=DEBUG
     #   - MONGO_INITDB_ADMINPASSWORD=mongopass
     #   - MONGO_REPLICA_SET_NAME=rsmongo

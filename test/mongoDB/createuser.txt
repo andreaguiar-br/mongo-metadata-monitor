@@ -1,2 +1,2 @@
-> db.createUser({user:"root", pwd:"mongopass", roles:[ {role:"dbAdmin", db:"Admin" }]})
+> db.createUser({user:"root", pwd:"mongopass", roles:[ {role:"dbAdmin", db:"admin" }]})
 
